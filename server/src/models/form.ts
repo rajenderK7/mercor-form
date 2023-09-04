@@ -1,0 +1,57 @@
+import { Schema, model } from "mongoose";
+
+export interface IFormField {
+  type: "text" | "radio" | "email" | "select" | "checkbox";
+  title: string;
+  placeholder?: string;
+  options?: string[];
+  rules: {
+    required: boolean;
+  };
+}
+
+export interface IForm {
+  title: string;
+  desc?: string;
+  fields: IFormField[];
+}
+
+const validTypes = ["text", "radio", "email", "select", "checkbox"];
+
+const FieldSchema = new Schema({
+  type: {
+    type: String,
+    enum: validTypes,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  placeholder: {
+    type: String,
+  },
+  options: [{ type: String }],
+  rules: {
+    required: {
+      type: Boolean,
+      default: true,
+    },
+  },
+});
+
+const FormSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    desc: {
+      type: String,
+    },
+    fields: [FieldSchema],
+  },
+  { timestamps: true }
+);
+const Form = model<IForm>("Form", FormSchema);
+export default Form;
