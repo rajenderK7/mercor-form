@@ -1,16 +1,19 @@
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
+import Create from "./components/Create";
+import Form from "./components/Form";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <main className="mt-14 p-2 md:p-0 mx-auto">
+      <main className="mt-14 md:p-0 mx-auto">
         <Routes>
           <Route path="/login" element={<p>Login</p>} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/create" element={<p>Create</p>} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/form" element={<Form />} />
         </Routes>
       </main>
     </div>
