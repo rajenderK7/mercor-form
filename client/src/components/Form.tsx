@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 
 interface IFormField {
-  type: "text" | "radio" | "email" | "password" | "select" | "checkbox";
+  type: "text" | "radio" | "email" | "select" | "checkbox";
   title: string;
   placeholder?: string;
   options?: string[];
@@ -38,14 +38,15 @@ const dummyData: IFormField[] = [
       required: true,
     },
   },
-  // {
-  //   type: "checkbox",
-  //   title: "Subscribe to Newsletter",
-  //   options: ["hello", "bro"],
-  //   rules: {
-  //     required: false,
-  //   },
-  // },
+  {
+    type: "select",
+    title: "Country",
+    options: ["Choose", "USA", "Canada", "UK", "Australia"],
+    placeholder: "Your Country",
+    rules: {
+      required: false,
+    },
+  },
 ];
 
 const Error = ({ children }: any) => (
@@ -57,38 +58,62 @@ const Input = ({ value, onChange, type, ...rest }: any) => {
     case "text":
       return (
         <input
-          className="w-2/5 mt-2 border-b border-b-gray-300 py-1  focus:border-b-[#4F46E5] focus:ring-white focus:border-white outline-none"
+          className="w-full lg:w-2/5 mt-2 border-b border-b-gray-300 py-1  focus:border-b-[#4F46E5] focus:ring-white focus:border-white outline-none"
           type="text"
           placeholder={rest?.placeholder}
           onChange={(e) => onChange(e.target.value)}
-          value={value}
+          value={value || ""}
+        />
+      );
+    case "email":
+      return (
+        <input
+          className="w-full lg:w-2/5 mt-2 border-b border-b-gray-300 py-1  focus:border-b-[#4F46E5] focus:ring-white focus:border-white outline-none"
+          type="email"
+          placeholder={rest?.placeholder}
+          onChange={(e) => onChange(e.target.value)}
+          value={value || ""}
         />
       );
     case "radio":
-      return rest?.options.map((e: any) => (
-        <div key={e} className="flex items-center mt-2">
+      return rest?.options.map((e: string) => (
+        <div key={e} className="flex items-center mt-3">
           <input
-            className="border-b border-b-gray-300 py-1 focus:border-b-[#4F46E5] focus:ring-white focus:border-white outline-none"
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600"
             type="radio"
             value={e}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(event) => onChange(event.target.value)}
             checked={value === e}
           />
           <label className="ml-2">{e}</label>
         </div>
       ));
     case "checkbox":
-      return rest?.options.map((e: any) => (
+      return rest?.options.map((e: string) => (
         <div key={e} className="flex space-x-1 items-center mt-2">
           <input
+            name={e}
             className="border-b border-b-gray-300 py-1 focus:border-b-[#4F46E5] focus:ring-white focus:border-white outline-none"
             type="checkbox"
-            onChange={(e) => onChange(e.target.checked)}
-            checked={value}
+            onChange={(event) => onChange(event.target.checked)}
           />
           <p className="ml-2">{e}</p>
         </div>
       ));
+    case "select":
+      return (
+        <select
+          className="mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5"
+          onChange={(e) => onChange(e.target.value)}
+          defaultValue={rest?.options[0]}
+        >
+          {rest?.options.map((option: string, index: number) => (
+            <option disabled={index === 0} key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      );
 
     default:
       return null;
@@ -108,7 +133,7 @@ const Form = () => {
     return (
       <section
         key={index}
-        className="bg-white border border-gray-300 rounded-md shadow-sm mb-3 p-2 lg:p-5"
+        className="bg-white border border-gray-300 rounded-md shadow-sm mb-4 p-3 lg:p-6 font-sans font-medium"
       >
         <div className="flex font-medium">
           <label className="text-[#4F46E5]">{title}</label>
@@ -118,9 +143,9 @@ const Form = () => {
           name={data.title}
           control={control}
           rules={rules}
-          defaultValue={""}
+          defaultValue=""
           render={({ field }) => (
-            <div>
+            <div className="text-sm">
               <Input {...field} {...data} />
             </div>
           )}
