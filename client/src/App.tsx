@@ -13,7 +13,7 @@ function App() {
           <Route path="/login" element={<p>Login</p>} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create" element={<Create />} />
-          <Route path="/form" element={<Form />} />
+          <Route path="/form/:formId" element={<Form />} />
         </Routes>
       </main>
     </div>
