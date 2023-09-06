@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 
 export interface IFormField {
-  type: "text" | "radio" | "email" | "select" | "checkbox";
+  type: "text" | "radio" | "email" | "select" | "textarea";
   title: string;
   placeholder?: string;
   options?: string[];
@@ -16,7 +16,7 @@ export interface IForm {
   fields: IFormField[];
 }
 
-const validTypes = ["text", "radio", "email", "select", "checkbox"];
+const validTypes = ["text", "radio", "email", "select", "textarea"];
 
 const FieldSchema = new Schema({
   type: {
@@ -53,5 +53,6 @@ const FormSchema = new Schema(
   },
   { timestamps: true }
 );
+
 const Form = model<IForm>("Form", FormSchema);
 export default Form;

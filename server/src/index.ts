@@ -3,6 +3,7 @@ import { configDotenv } from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import formRouter from "./routes/form";
+import formResponseRouter from "./routes/form_response";
 
 configDotenv();
 
@@ -23,6 +24,7 @@ app.use(cors());
 
 const apiRouter = express.Router();
 apiRouter.use("/form", formRouter);
+apiRouter.use("/form-response", formResponseRouter);
 
 app.use("/api", apiRouter);
 
