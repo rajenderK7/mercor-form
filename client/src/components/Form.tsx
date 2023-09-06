@@ -1,7 +1,12 @@
 import { Controller, useForm } from "react-hook-form";
+import FormField, { Error } from "./FormField";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import formActions from "../actions/form.actions";
 
-interface IFormField {
-  type: "text" | "radio" | "email" | "select" | "checkbox";
+export interface IFormField {
+  type: "text" | "radio" | "email" | "select" | "textarea";
   title: string;
   placeholder?: string;
   options?: string[];
@@ -10,115 +15,11 @@ interface IFormField {
   };
 }
 
-const dummyData: IFormField[] = [
-  {
-    type: "text",
-    title: "What is your name?",
-    placeholder: "Enter your name",
-    options: [],
-    rules: {
-      required: true,
-    },
-  },
-  {
-    type: "text",
-    title: "Email",
-    placeholder: "Enter your email",
-    options: [],
-    rules: {
-      required: true,
-    },
-  },
-  {
-    type: "radio",
-    title: "Which country do you live in?",
-    placeholder: "Select your country",
-    options: ["USA", "Canada", "UK", "Australia"],
-    rules: {
-      required: true,
-    },
-  },
-  {
-    type: "select",
-    title: "Country",
-    options: ["Choose", "USA", "Canada", "UK", "Australia"],
-    placeholder: "Your Country",
-    rules: {
-      required: false,
-    },
-  },
-];
-
-const Error = ({ children }: any) => (
-  <p className="mt-2 text-red-500 text-sm">{children}</p>
-);
-
-const Input = ({ value, onChange, type, ...rest }: any) => {
-  switch (type) {
-    case "text":
-      return (
-        <input
-          className="w-full lg:w-2/5 mt-2 border-b border-b-gray-300 py-1  focus:border-b-[#4F46E5] focus:ring-white focus:border-white outline-none"
-          type="text"
-          placeholder={rest?.placeholder}
-          onChange={(e) => onChange(e.target.value)}
-          value={value || ""}
-        />
-      );
-    case "email":
-      return (
-        <input
-          className="w-full lg:w-2/5 mt-2 border-b border-b-gray-300 py-1  focus:border-b-[#4F46E5] focus:ring-white focus:border-white outline-none"
-          type="email"
-          placeholder={rest?.placeholder}
-          onChange={(e) => onChange(e.target.value)}
-          value={value || ""}
-        />
-      );
-    case "radio":
-      return rest?.options.map((e: string) => (
-        <div key={e} className="flex items-center mt-3">
-          <input
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600"
-            type="radio"
-            value={e}
-            onChange={(event) => onChange(event.target.value)}
-            checked={value === e}
-          />
-          <label className="ml-2">{e}</label>
-        </div>
-      ));
-    case "checkbox":
-      return rest?.options.map((e: string) => (
-        <div key={e} className="flex space-x-1 items-center mt-2">
-          <input
-            name={e}
-            className="border-b border-b-gray-300 py-1 focus:border-b-[#4F46E5] focus:ring-white focus:border-white outline-none"
-            type="checkbox"
-            onChange={(event) => onChange(event.target.checked)}
-          />
-          <p className="ml-2">{e}</p>
-        </div>
-      ));
-    case "select":
-      return (
-        <select
-          className="mt-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/2 p-2.5"
-          onChange={(e) => onChange(e.target.value)}
-          defaultValue={rest?.options[0]}
-        >
-          {rest?.options.map((option: string, index: number) => (
-            <option disabled={index === 0} key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      );
-
-    default:
-      return null;
-  }
-};
+export interface IForm {
+  title: string;
+  desc?: string;
+  fields: IFormField[];
+}
 
 const Form = () => {
   const {
@@ -126,46 +27,104 @@ const Form = () => {
     control,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  const { formId } = useParams();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState<IForm | undefined>();
 
-  const formInputs = dummyData.map((data, index) => {
-    const { rules, title } = data;
-    return (
-      <section
-        key={index}
-        className="bg-white border border-gray-300 rounded-md shadow-sm mb-4 p-3 lg:p-6 font-sans font-medium"
-      >
-        <div className="flex font-medium">
-          <label className="text-[#4F46E5]">{title}</label>
-          {data.rules.required && <p className="ml-1 text-red-500">*</p>}
-        </div>
-        <Controller
-          name={data.title}
-          control={control}
-          rules={rules}
-          defaultValue=""
-          render={({ field }) => (
-            <div className="text-sm">
-              <Input {...field} {...data} />
-            </div>
-          )}
-        />
-        {errors[data.title] && <Error>This is a required question</Error>}
-      </section>
+  const fetchForm = async () => {
+    setLoading(true);
+    const data = await formActions.fetchForm(formId!);
+    setForm(data.form);
+    setLoading(false);
+  };
+
+  const submitForm = async (formData: any) => {
+    setLoading(true);
+    const message = await formActions.submitResponse(
+      "64f7da18c7facdab30fefe2c",
+      "64f7da18c7facdab30fefe2c",
+      formData
     );
-  });
+    if (message === "success") {
+      navigate(`/responded?formTitle=${form?.title}`, {
+        replace: true,
+      });
+      return;
+    }
+    toast.error("Something went wrong. Please try again later");
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchForm();
+  }, []);
 
   return (
-    <div className="max-w-2xl mx-auto pt-4 px-2 md:px-0">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {formInputs}
-        <button
-          type="submit"
-          className="text-white bg-[#4F46E5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5"
-        >
-          Submit
-        </button>
-      </form>
+    <div className="max-w-2xl mx-auto py-4 px-2 md:px-0 font-sans">
+      {loading && <p>Loading..</p>}
+      {form && (
+        <>
+          <div className="bg-white border border-gray-300 border-t-8 border-t-[#4F46E5]  rounded-md shadow-sm mb-4 p-3 lg:p-6">
+            <h2 className="text-3xl font-bold mercor-color">{form.title}</h2>
+            <p className="mt-1 font-medium text-gray-600">{form.desc}</p>
+            <hr className="my-2 border-gray-300" />
+            <div className="text-sm">
+              <p className="flex items-center">
+                <span className="font-semibold">rseven@email.com </span>
+                <span className="mercor-color ml-1">Switch account</span>
+              </p>
+              <p className="text-red-500 mt-1">* Indicates required question</p>
+            </div>
+          </div>
+          <form onSubmit={handleSubmit(submitForm)}>
+            {form.fields.map((data: any, index: any) => {
+              const { rules, title } = data;
+              return (
+                <section
+                  key={index}
+                  className="bg-white border border-gray-300 rounded-md shadow-sm mb-4 p-3 lg:p-6 font-medium"
+                >
+                  <label className="text-[#4F46E5]">
+                    {title}
+                    {data.rules.required && (
+                      <span className="ml-1 text-red-500">*</span>
+                    )}
+                  </label>
+                  <Controller
+                    name={data.title}
+                    control={control}
+                    rules={rules}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <div className="text-sm">
+                        <FormField {...field} {...data} />
+                      </div>
+                    )}
+                  />
+                  {errors[data.title] && (
+                    <Error>This is a required question</Error>
+                  )}
+                </section>
+              );
+            })}
+            <div className="flex justify-between items-center">
+              <button
+                type="submit"
+                className="text-white bg-[#4F46E5] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5"
+              >
+                Submit
+              </button>
+              <button
+                type="button"
+                className="text-[#4F46E5] font-medium text-sm"
+              >
+                Clear form
+              </button>
+            </div>
+          </form>
+        </>
+      )}
     </div>
   );
 };

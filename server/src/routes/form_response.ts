@@ -5,6 +5,7 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     const formResponse = req.body;
+    console.log(formResponse);
     const doc = new FormResponse(formResponse);
     await doc.save();
     res.status(201).json({ message: "success" });
