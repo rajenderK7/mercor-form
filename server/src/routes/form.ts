@@ -1,5 +1,6 @@
 import express from "express";
 import Form from "../models/form";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -14,11 +15,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:formId", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const { formId } = req.params;
+    const { id } = req.params;
     const data = req.body;
-    await Form.findByIdAndUpdate(formId, data);
+    await Form.findByIdAndUpdate(id, data);
     res.status(201).json({ message: "success" });
   } catch (e: any) {
     res.status(500).json({ message: e.message });
@@ -30,6 +31,25 @@ router.get("/:id", async (req, res) => {
     const { id } = req.params;
     const form = await Form.findById(id);
     res.status(200).json({ message: "success", form });
+  } catch (e: any) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+router.get("/questions/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const form = await Form.findById(id);
+    if (!form) {
+      throw new Error("form does not exist");
+    }
+    const types = form.fields.map((field) => {
+      return {
+        type: field.type,
+        title: field.title,
+      };
+    });
+    res.status(200).json({ message: "success", types });
   } catch (e: any) {
     res.status(500).json({ message: e.message });
   }
