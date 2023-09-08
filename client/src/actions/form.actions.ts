@@ -79,4 +79,20 @@ const submitResponse = async (
   }
 };
 
-export default { createForm, updateForm, fetchForm, submitResponse };
+const fetchResponses = async (formId: string) => {
+  try {
+    const res = await fetch(`${endpoints.API_URL}/form-response/${formId}`);
+    const data = await res.json();
+    return data.responses;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};
+
+export default {
+  createForm,
+  updateForm,
+  fetchForm,
+  submitResponse,
+  fetchResponses,
+};

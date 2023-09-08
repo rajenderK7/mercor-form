@@ -41,6 +41,7 @@ const Navbar = () => {
             <Avatar name={user.name} size="sm" bg="#4F46E5" cursor="pointer" />
           </PopoverTrigger>
           <PopoverContent
+            zIndex={10}
             border="1px solid #4F46E5"
             width="fit-content"
             className="font-sans text-sm selection:bg-[#4F46E5] selection:text-white shadow-md border border-gray-500"
@@ -60,8 +61,8 @@ const Navbar = () => {
               <strong>User ID</strong>
               <p>{user.userId}</p>
             </PopoverBody>
-            <PopoverFooter className="text-center">
-              <button onClick={handleLogout} className="font-medium">
+            <PopoverFooter className="text-center w-full bg-gray-100 rounded-b-md">
+              <button onClick={handleLogout} className="font-medium w-full">
                 Log out
               </button>
             </PopoverFooter>
