@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./components/Dashboard";
 import Create from "./components/Create";
 import Form from "./components/Form";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
       <Navbar />
       <main className="mt-14 md:p-0 mx-auto">
         <Routes>
-          <Route path="/login" element={<p>Login</p>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create" element={<Create />} />
           <Route path="/form/:formId" element={<Form />} />
