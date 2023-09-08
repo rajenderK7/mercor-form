@@ -4,6 +4,7 @@ import Dashboard from "./components/Dashboard";
 import Create from "./components/Create";
 import Form from "./components/Form";
 import Login from "./components/Login";
+import Responded from "./components/Responded";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create" element={<Create />} />
           <Route path="/form/:formId" element={<Form />} />
+          <Route path="/responded/" element={<Responded />} />
         </Routes>
       </main>
     </div>

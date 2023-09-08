@@ -1,6 +1,6 @@
 import { useState } from "react";
 import authActions from "../actions/auth.actions";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import toast from "react-hot-toast";
 import userAtom from "../state/auth";
@@ -10,6 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isNewUser, setIsNewUser] = useState(false);
+  const [searchParams, _] = useSearchParams();
   const setUser = useSetRecoilState(userAtom);
   const navigate = useNavigate();
 
@@ -30,6 +31,13 @@ const Login = () => {
       console.log(data.user);
       setUser(data.user);
       toast.success("Login successful");
+      const redirectURL = searchParams.get("redirect");
+      if (redirectURL) {
+        navigate(`/${redirectURL}`, {
+          replace: true,
+        });
+        return;
+      }
       navigate("/dashboard", {
         replace: true,
       });
@@ -37,6 +45,7 @@ const Login = () => {
     }
     toast.error(data.message);
   };
+
   return (
     <div className="bg-primary mt-56  lg:mt-[10%] mx-3 font-sans flex justify-center items-center ">
       <div className="bg-white p-8 border border-gray-300 shadow-md rounded-lg w-96">
