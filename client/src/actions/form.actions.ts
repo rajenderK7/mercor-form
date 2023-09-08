@@ -53,6 +53,19 @@ const fetchForm = async (formId: string) => {
   }
 };
 
+const fetchFormQuestions = async (formId: string) => {
+  try {
+    const res = await fetch(`${endpoints.API_URL}/form/questions/${formId}`);
+    const data = await res.json();
+    if (data.message === "success") {
+      return data;
+    }
+    return null;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};
+
 const submitResponse = async (
   userId: string,
   formId: string,
@@ -93,6 +106,7 @@ export default {
   createForm,
   updateForm,
   fetchForm,
+  fetchFormQuestions,
   submitResponse,
   fetchResponses,
 };
