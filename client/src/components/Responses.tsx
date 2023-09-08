@@ -72,7 +72,7 @@ const Responses = () => {
             <p className="text-2xl text-start px-3 py-3 w-full bg-white shadow-md rounded-t-md">
               {nResponses} Responses
             </p>
-            <Tabs tabIndex={0} align="center" variant="unstyled" border="2">
+            <Tabs align="center" variant="unstyled" border="2">
               <TabList
                 justifyContent="space-evenly"
                 width="full"
@@ -99,11 +99,7 @@ const Responses = () => {
               <TabPanels className="w-full">
                 {/* Questions */}
                 <TabPanel>
-                  <Summary
-                    //  formId={formId}
-                    types={types}
-                    summary={summary}
-                  />
+                  <Summary types={types} summary={summary} />
                 </TabPanel>
                 {/* Responses */}
                 <TabPanel>
