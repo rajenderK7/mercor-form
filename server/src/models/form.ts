@@ -11,6 +11,7 @@ export interface IFormField {
 }
 
 export interface IForm {
+  creatorId: string;
   title: string;
   desc?: string;
   fields: IFormField[];
@@ -42,6 +43,10 @@ const FieldSchema = new Schema({
 
 const FormSchema = new Schema(
   {
+    creatorId: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,

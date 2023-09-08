@@ -1,6 +1,5 @@
 import express from "express";
 import Form from "../models/form";
-import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -31,6 +30,20 @@ router.get("/:id", async (req, res) => {
     const { id } = req.params;
     const form = await Form.findById(id);
     res.status(200).json({ message: "success", form });
+  } catch (e: any) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+router.get("/creator/:userId/:formId", async (req, res) => {
+  try {
+    const { userId, formId } = req.params;
+    const form = await Form.findById(formId);
+    if (!form) {
+      throw new Error("form does not exist");
+    }
+    const isCreator = userId === form.creatorId;
+    res.status(200).json({ message: "success", isCreator });
   } catch (e: any) {
     res.status(500).json({ message: e.message });
   }
