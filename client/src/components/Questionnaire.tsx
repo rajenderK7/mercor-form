@@ -17,9 +17,11 @@ import {
   Tab,
   TabPanel,
 } from "@chakra-ui/react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import formActions from "../actions/form.actions";
+import { useRecoilValue } from "recoil";
+import userAtom from "../state/auth";
 
 const questionPlaceholder = { type: "radio", required: false, options: [] };
 
@@ -115,7 +117,15 @@ const Questionnaire = () => {
     }
   };
 
+  const user = useRecoilValue(userAtom);
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (!user.email) {
+      navigate("/login", {
+        replace: true,
+      });
+    }
     init();
   }, []);
 

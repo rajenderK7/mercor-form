@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import formActions from "../actions/form.actions";
+import { useRecoilValue } from "recoil";
+import userAtom from "../state/auth";
+import LoginModal from "./LoginModal";
 
 export interface IFormField {
   type: "text" | "radio" | "email" | "select" | "textarea";
@@ -30,6 +33,7 @@ const Form = () => {
   const { formId } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [form, setForm] = useState<IForm | undefined>();
 
   const fetchForm = async () => {
@@ -42,8 +46,8 @@ const Form = () => {
   const submitForm = async (formData: any) => {
     setLoading(true);
     const message = await formActions.submitResponse(
-      "64f7da18c7facdab30fefe2c",
-      "64f7da18c7facdab30fefe2c",
+      user.userId,
+      formId!,
       formData
     );
     if (message === "success") {
@@ -56,12 +60,19 @@ const Form = () => {
     setLoading(false);
   };
 
+  const user = useRecoilValue(userAtom);
+
   useEffect(() => {
-    fetchForm();
+    if (!user.email) {
+      setShowLoginModal(true);
+    } else {
+      fetchForm();
+    }
   }, []);
 
   return (
     <div className="max-w-2xl mx-auto py-4 px-2 md:px-0 font-sans">
+      {showLoginModal && <LoginModal formId={formId!} />}
       {loading && <p className="text-center">Loading..</p>}
       {form && (
         <>
@@ -70,10 +81,10 @@ const Form = () => {
             <p className="mt-1 font-medium text-gray-600">{form.desc}</p>
             <hr className="my-2 border-gray-300" />
             <div className="text-sm">
-              <p className="flex items-center">
-                <span className="font-semibold">rseven@email.com </span>
-                <span className="mercor-color ml-1">Switch account</span>
-              </p>
+              <div className="flex items-center">
+                <span>Signed in as</span>
+                <span className="font-semibold ml-1">{user.email}</span>
+              </div>
               <p className="text-red-500 mt-1">* Indicates required question</p>
             </div>
           </div>

@@ -1,8 +1,22 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import plus from "../assets/plus.svg";
 import CenterWrapper from "./CenterWrapper";
+import userAtom from "../state/auth";
+import { useRecoilValue } from "recoil";
 
 const Dashboard = () => {
+  const user = useRecoilValue(userAtom);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user.email) {
+      navigate("/login", {
+        replace: true,
+      });
+    }
+  }, []);
+
   return (
     <div className="flex bg-slate-100 py-6">
       <CenterWrapper>
