@@ -62,7 +62,7 @@ const Form = () => {
 
   return (
     <div className="max-w-2xl mx-auto py-4 px-2 md:px-0 font-sans">
-      {loading && <p>Loading..</p>}
+      {loading && <p className="text-center">Loading..</p>}
       {form && (
         <>
           <div className="bg-white border border-gray-300 border-t-8 border-t-[#4F46E5]  rounded-md shadow-sm mb-4 p-3 lg:p-6">
