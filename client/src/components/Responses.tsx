@@ -9,21 +9,68 @@ import {
   TabIndicator,
 } from "@chakra-ui/react";
 import Summary from "./Summary";
+import formActions from "../actions/form.actions";
+
+export interface IFormResponse {
+  userId: string;
+  formId: string;
+  formData: {
+    [field: string]: string;
+  };
+}
+
+interface Q {
+  [q: string]: string[];
+}
 
 const Responses = () => {
+  const [types, setTypes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [nResponses, setNResponses] = useState(0);
+  const [summary, setSummary] = useState<Q>({});
   const [searchParams, _] = useSearchParams();
   const [formId, setFormId] = useState<string | null>(null);
+
+  const fetchFormQuestions = async (formId: string) => {
+    const data = await formActions.fetchFormQuestions(formId!);
+    const types = data.types.map((t: any) => t.type);
+    setTypes(types);
+  };
+
+  const fetchResponses = async (formId: string) => {
+    const data = await formActions.fetchResponses(formId!);
+    setNResponses(data.length);
+    const responses: Q = {};
+
+    data.forEach((response: IFormResponse) => {
+      Object.keys(response.formData).forEach((q) => {
+        if (q in responses) {
+          responses[q].push(response.formData[q]);
+        } else {
+          responses[q] = [response.formData[q]];
+        }
+      });
+    });
+
+    setSummary(responses);
+  };
+
   useEffect(() => {
-    setFormId(searchParams.get("formId"));
+    const fId = searchParams.get("formId");
+    setFormId(fId);
+    setLoading(true);
+    fetchFormQuestions(fId!);
+    fetchResponses(fId!);
+    setLoading(false);
   }, []);
   return (
     <>
       {!formId && <p className="text-center">Loading..</p>}
-      {formId && (
+      {formId && !loading && (
         <div className="w-full font-sans">
           <div className=" font-medium">
-            <p className="text-2xl text-start px-3 pt-3 w-full bg-white shadow-md rounded-t-md">
-              3 responses
+            <p className="text-2xl text-start px-3 py-3 w-full bg-white shadow-md rounded-t-md">
+              {nResponses} Responses
             </p>
             <Tabs tabIndex={0} align="center" variant="unstyled" border="2">
               <TabList
@@ -38,7 +85,7 @@ const Responses = () => {
                 shadow="md"
               >
                 <Tab>Summary</Tab>
-                <Tab>Responses</Tab>
+                <Tab>Questions</Tab>
                 <Tab>Settings</Tab>
               </TabList>
 
@@ -52,7 +99,11 @@ const Responses = () => {
               <TabPanels className="w-full">
                 {/* Questions */}
                 <TabPanel>
-                  <Summary formId={formId} />
+                  <Summary
+                    //  formId={formId}
+                    types={types}
+                    summary={summary}
+                  />
                 </TabPanel>
                 {/* Responses */}
                 <TabPanel>
