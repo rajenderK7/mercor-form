@@ -28,7 +28,6 @@ const Login = () => {
     const data = await authActions.login({ email, password });
     if (data.message === "success") {
       localStorage.setItem("user", JSON.stringify(data.user));
-      console.log(data.user);
       setUser(data.user);
       toast.success("Login successful");
       const redirectURL = searchParams.get("redirect");

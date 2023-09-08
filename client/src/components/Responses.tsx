@@ -57,12 +57,14 @@ const Responses = () => {
 
   useEffect(() => {
     const fId = searchParams.get("formId");
-    setFormId(fId);
-    setLoading(true);
-    fetchFormQuestions(fId!);
-    fetchResponses(fId!);
-    setLoading(false);
-  }, []);
+    if (fId) {
+      setFormId(fId);
+      setLoading(true);
+      fetchFormQuestions(fId!);
+      fetchResponses(fId!);
+      setLoading(false);
+    }
+  }, [searchParams]);
   return (
     <>
       {!formId && <p className="text-center">Loading..</p>}
@@ -85,7 +87,6 @@ const Responses = () => {
                 shadow="md"
               >
                 <Tab>Summary</Tab>
-                <Tab>Questions</Tab>
                 <Tab>Settings</Tab>
               </TabList>
 
@@ -101,13 +102,9 @@ const Responses = () => {
                 <TabPanel>
                   <Summary types={types} summary={summary} />
                 </TabPanel>
-                {/* Responses */}
-                <TabPanel>
-                  <p>skdfjklsd</p>
-                </TabPanel>
                 {/* Settings */}
                 <TabPanel>
-                  <p>three!</p>
+                  <p>Settings</p>
                 </TabPanel>
               </TabPanels>
             </Tabs>
