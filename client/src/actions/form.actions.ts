@@ -53,6 +53,21 @@ const fetchForm = async (formId: string) => {
   }
 };
 
+const fetchValidCreator = async (userId: string, formId: string) => {
+  try {
+    const res = await fetch(
+      `${endpoints.API_URL}/form/creator/${userId}/${formId}`
+    );
+    const data = await res.json();
+    if (data.message === "success") {
+      return data;
+    }
+    return null;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};
+
 const fetchFormQuestions = async (formId: string) => {
   try {
     const res = await fetch(`${endpoints.API_URL}/form/questions/${formId}`);
@@ -107,6 +122,7 @@ export default {
   updateForm,
   fetchForm,
   fetchFormQuestions,
+  fetchValidCreator,
   submitResponse,
   fetchResponses,
 };
