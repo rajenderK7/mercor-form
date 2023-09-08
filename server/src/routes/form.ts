@@ -35,7 +35,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/creator/:userId/:formId", async (req, res) => {
+router.get("/creator/:userId/:formId", async (req, res) => {
   try {
     const { userId, formId } = req.params;
     const form = await Form.findById(formId);
