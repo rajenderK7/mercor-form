@@ -7,6 +7,7 @@ import {
   TabIndicator,
 } from "@chakra-ui/react";
 import Questionnaire from "./Questionnaire";
+import Responses from "./Responses";
 
 const Create = () => {
   return (
@@ -28,7 +29,7 @@ const Create = () => {
             </TabPanel>
             {/* Responses */}
             <TabPanel>
-              <p>two!</p>
+              <Responses />
             </TabPanel>
             {/* Settings */}
             <TabPanel>

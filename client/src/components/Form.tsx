@@ -28,6 +28,7 @@ const Form = () => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm();
   const { formId } = useParams();
@@ -128,7 +129,8 @@ const Form = () => {
               </button>
               <button
                 type="button"
-                className="text-[#4F46E5] font-medium text-sm"
+                onClick={() => reset()}
+                className="text-[#4F46E5] font-medium text-sm px-5 py-2.5 hover:bg-slate-200 rounded-md"
               >
                 Clear form
               </button>
