@@ -7,7 +7,18 @@ router.post("/", async (req, res) => {
   try {
     const data = req.body;
     const form = new Form(data);
-    await form.save();
+    const doc = await form.save();
+    res.status(201).json({ message: "success", formId: doc._id });
+  } catch (e: any) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+router.put("/:formId", async (req, res) => {
+  try {
+    const { formId } = req.params;
+    const data = req.body;
+    await Form.findByIdAndUpdate(formId, data);
     res.status(201).json({ message: "success" });
   } catch (e: any) {
     res.status(500).json({ message: e.message });
