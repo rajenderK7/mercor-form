@@ -14,6 +14,16 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/:formId", async (req, res) => {
+  try {
+    const { formId } = req.params;
+    const responses = await FormResponse.find({ formId });
+    res.status(200).json({ message: "success", responses });
+  } catch (e: any) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
