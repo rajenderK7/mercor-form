@@ -117,6 +117,28 @@ const fetchResponses = async (formId: string) => {
   }
 };
 
+const sendMail = async (
+  emails: string,
+  title: string,
+  link: string,
+  subject: string | undefined
+) => {
+  try {
+    const res = await fetch(`${endpoints.API_URL}/form/share/email`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ emails, title, link, subject }),
+    });
+    const data = await res.json();
+    return data;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};
+
 export default {
   createForm,
   updateForm,
@@ -125,4 +147,5 @@ export default {
   fetchValidCreator,
   submitResponse,
   fetchResponses,
+  sendMail,
 };

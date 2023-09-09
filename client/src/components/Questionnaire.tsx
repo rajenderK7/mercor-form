@@ -23,7 +23,11 @@ import formActions from "../actions/form.actions";
 import { useRecoilValue } from "recoil";
 import userAtom from "../state/auth";
 
-const questionPlaceholder = { type: "radio", required: false, options: [] };
+const questionPlaceholder = {
+  type: "radio",
+  rules: { required: false },
+  options: [],
+};
 
 const Questionnaire = () => {
   const [title, setTitle] = useState("");
@@ -37,6 +41,20 @@ const Questionnaire = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formId, setFormId] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleSendMail = async () => {
+    if (emails[emails.length - 1] === ";") {
+      setEmails(emails.substring(0, emails.length - 1));
+    }
+    const res = await formActions.sendMail(emails, title, shareLink, subject);
+    if (res.message === "success") {
+      toast.success("Form invitations sent");
+      setEmails("");
+      onClose();
+    } else {
+      toast.error("Something went wrong");
+    }
+  };
 
   const addQuestion = () => {
     setQuestions((prev) => [...prev, questionPlaceholder]);
@@ -68,7 +86,7 @@ const Questionnaire = () => {
         title: q.question,
         options: q.type === "select" ? ["Choose", ...q.options] : q.options,
         rules: {
-          required: q.required,
+          required: q.required ?? false,
         },
       };
     });
@@ -103,6 +121,8 @@ const Questionnaire = () => {
 
   const fetchForm = async (formId: string) => {
     const data = await formActions.fetchForm(formId);
+    console.log(data);
+
     setTitle(data.form.title);
     setDesc(data.form.desc);
     setQuestions(data.form.fields);
@@ -229,7 +249,11 @@ const Questionnaire = () => {
                       Close
                     </Button>
                     {selectedIndex == 0 ? (
-                      <Button color="#4F46E5" variant="outline">
+                      <Button
+                        onClick={handleSendMail}
+                        color="#4F46E5"
+                        variant="outline"
+                      >
                         Send
                       </Button>
                     ) : (
