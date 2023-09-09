@@ -46,7 +46,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-primary mt-56  lg:mt-[10%] mx-3 font-sans flex justify-center items-center ">
+    <div className="bg-[#EEF3FE] mx-auto w-full px-4 lg:px-0 flex justify-center h-screen -mt-14 items-center">
       <div className="bg-white p-8 border border-gray-300 shadow-md rounded-lg w-96">
         <h2 className="text-2xl font-semibold  mb-4 text-[#4F46E5]">
           {isNewUser ? "Sign Up" : "Login"}

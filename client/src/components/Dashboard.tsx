@@ -18,19 +18,25 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="flex bg-slate-100 py-6">
-      <CenterWrapper>
-        <Link
-          to="/create"
-          className="flex flex-col text-sm font-medium text-center"
-        >
-          <div className="w-32 h-32 rounded-md bg-white p-4 border border-gray-300 hover:border-gray-500 mb-2 flex items-center justify-center ">
-            <img src={plus} alt="Create" width={80} height={80} />
+    <>
+      <div className=" bg-slate-100">
+        <CenterWrapper>
+          <p className="mb-4 font-medium">Start a new form</p>
+          <div className="flex">
+            <Link to="/create" className="flex flex-col text-sm font-medium">
+              <div className="w-40 h-36 rounded-sm bg-white p-4 border border-gray-300 hover:border-blue-800 mb-2 flex items-center justify-center ">
+                <img src={plus} alt="Create" width={60} height={60} />
+              </div>
+              Blank
+            </Link>
           </div>
-          Create
-        </Link>
+        </CenterWrapper>
+      </div>
+      <CenterWrapper>
+        <p className="font-medium">Recent forms</p>
+        {/* My forms */}
       </CenterWrapper>
-    </div>
+    </>
   );
 };
 
