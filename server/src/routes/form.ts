@@ -83,10 +83,20 @@ router.post("/share/email", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.get("/user-forms/:userId", async (req, res) => {
   try {
-    const { id } = req.params;
-    await Form.deleteOne({ _id: id });
+    const { userId } = req.params;
+    const forms = await Form.find({ creatorId: userId });
+    res.status(200).json({ message: "success", forms });
+  } catch (e: any) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
+router.delete("/:formId/:creatorId", async (req, res) => {
+  try {
+    const { formId, creatorId } = req.params;
+    await Form.deleteOne({ _id: formId, creatorId });
     res.status(200).json({ message: "success" });
   } catch (e: any) {
     res.status(500).json({ message: e.message });
