@@ -56,7 +56,7 @@ const Question = ({ questionData, onUpdate, onDelete }: QuestionProps) => {
             value={type}
           >
             <option value="radio">Multiple choice</option>
-            <option value="text">Text</option>
+            <option value="text">Short answer</option>
             <option value="textarea">Paragraph</option>
             <option value="select">Dropdown</option>
           </select>

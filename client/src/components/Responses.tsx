@@ -7,6 +7,7 @@ import {
   Tab,
   TabPanel,
   TabIndicator,
+  Button,
 } from "@chakra-ui/react";
 import Summary from "./Summary";
 import formActions from "../actions/form.actions";
@@ -38,6 +39,7 @@ const Responses = () => {
   };
 
   const fetchResponses = async (formId: string) => {
+    setLoading(true);
     const data = await formActions.fetchResponses(formId!);
     setNResponses(data.length);
     const responses: Q = {};
@@ -53,27 +55,33 @@ const Responses = () => {
     });
 
     setSummary(responses);
+    setLoading(false);
   };
 
   useEffect(() => {
     const fId = searchParams.get("formId");
     if (fId) {
       setFormId(fId);
-      setLoading(true);
       fetchFormQuestions(fId!);
       fetchResponses(fId!);
-      setLoading(false);
     }
   }, [searchParams]);
   return (
     <>
       {!formId && <p className="text-center">Loading..</p>}
+      {loading && <p>Loading...</p>}
       {formId && !loading && (
         <div className="w-full font-sans">
           <div className=" font-medium">
-            <p className="text-2xl text-start px-3 py-3 w-full bg-white shadow-md rounded-t-md">
-              {nResponses} Responses
-            </p>
+            <div className="flex items-center justify-between text-start px-3 py-3 w-full bg-white shadow-md rounded-t-md">
+              <p className="text-2xl ">{nResponses} Responses</p>
+              <p
+                onClick={() => fetchResponses(formId)}
+                className="text-[#4F46E5]"
+              >
+                Refresh
+              </p>
+            </div>
             <Tabs align="center" variant="unstyled" border="2">
               <TabList
                 justifyContent="space-evenly"

@@ -92,10 +92,15 @@ const Questionnaire = () => {
       return;
     }
     const fields = questions.map((q) => {
+      if (q.type === "select") {
+        if (q.options && q.options[0] !== "Choose") {
+          q.options.unshift("Choose");
+        }
+      }
       return {
         type: q.type,
         title: q.title,
-        options: q.type === "select" ? ["Choose", ...q.options!] : q.options,
+        options: q.options,
         rules: {
           required: q.rules.required,
         },
