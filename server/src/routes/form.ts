@@ -1,5 +1,6 @@
 import express from "express";
 import Form from "../models/form";
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 
@@ -68,6 +69,20 @@ router.get("/questions/:id", async (req, res) => {
   }
 });
 
+router.post("/share/email", async (req, res) => {
+  try {
+    const { emails, subject, title, link } = req.body;
+    const emailIds = emails.split(";");
+    const response = sendMail(emailIds, title, link, subject);
+    if (response === "success") {
+      return res.status(200).json({ message: "success" });
+    }
+    res.status(400).json({ message: response });
+  } catch (e: any) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -77,5 +92,41 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: e.message });
   }
 });
+
+const sendMail = (
+  emails: string[],
+  title: string,
+  link: string,
+  subject: string | undefined
+) => {
+  const transporter = nodemailer.createTransport({
+    service: "outlook",
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAIL_PASS,
+    },
+    tls: {
+      ciphers: "SSLv3",
+      rejectUnauthorized: false,
+    },
+  });
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: emails,
+    subject: subject ?? title ?? "Form invitation",
+    html: `<div>
+      <p>Hello there! I invited you to fill out a form:</p>
+      <h2>${title}</h2>
+      <p>Click the link below</p>
+      <a href=${link}>FILL OUT FORM</a>
+    </div>`,
+  };
+  transporter.sendMail(mailOptions, function (error, _) {
+    if (error) {
+      return error;
+    }
+  });
+  return "success";
+};
 
 export default router;
