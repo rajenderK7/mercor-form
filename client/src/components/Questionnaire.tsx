@@ -24,15 +24,26 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../state/auth";
 
 const questionPlaceholder = {
+  title: "",
   type: "radio",
   rules: { required: false },
   options: [],
 };
 
+interface T {
+  _id?: string;
+  title: string;
+  type: string;
+  rules: {
+    required: boolean;
+  };
+  options?: string[];
+}
+
 const Questionnaire = () => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  const [questions, setQuestions] = useState<any[]>([questionPlaceholder]);
+  const [questions, setQuestions] = useState<T[]>([questionPlaceholder]);
   const [emails, setEmails] = useState("");
   const [subject, setSubject] = useState("");
   const [shareLink, setShareLink] = useState("");
@@ -83,10 +94,10 @@ const Questionnaire = () => {
     const fields = questions.map((q) => {
       return {
         type: q.type,
-        title: q.question,
-        options: q.type === "select" ? ["Choose", ...q.options] : q.options,
+        title: q.title,
+        options: q.type === "select" ? ["Choose", ...q.options!] : q.options,
         rules: {
-          required: q.required ?? false,
+          required: q.rules.required,
         },
       };
     });
@@ -121,11 +132,9 @@ const Questionnaire = () => {
 
   const fetchForm = async (formId: string) => {
     const data = await formActions.fetchForm(formId);
-    console.log(data);
-
+    setQuestions(data.form.fields);
     setTitle(data.form.title);
     setDesc(data.form.desc);
-    setQuestions(data.form.fields);
   };
 
   const init = async () => {
@@ -156,7 +165,7 @@ const Questionnaire = () => {
 
   return (
     <>
-      {loading && <p className="text-center">Loading</p>}
+      {loading && <p className="text-center">Loading..</p>}
       {!loading && (
         <div className="w-full font-sans">
           <div className="w-fit lg:w-auto mb-4 lg:mb-0 lg:fixed flex lg:flex-col space-x-5 lg:space-x-0 lg:space-y-3 lg:items-center right-[13%] top-[50%] bg-white p-3 rounded-md border border-gray-300">

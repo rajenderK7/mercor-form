@@ -9,8 +9,8 @@ export interface QuestionProps {
 
 const Question = ({ questionData, onUpdate, onDelete }: QuestionProps) => {
   const [type, setType] = useState(questionData.type);
-  const [question, setQuestion] = useState(questionData.title);
-  const [required, setRequired] = useState(questionData.required);
+  const [title, setTitle] = useState(questionData.title);
+  const [required, setRequired] = useState(questionData.rules.required);
   const [option, setOption] = useState("");
   const [options, setOptions] = useState<string[]>(questionData.options);
 
@@ -23,12 +23,14 @@ const Question = ({ questionData, onUpdate, onDelete }: QuestionProps) => {
   useEffect(() => {
     const updatedData = {
       type,
-      question,
-      required,
+      title,
+      rules: {
+        required,
+      },
       options,
     };
     onUpdate(updatedData);
-  }, [type, question, required, options]);
+  }, [type, title, required, options]);
 
   return (
     <div className="bg-white border border-gray-300 rounded-md shadow-sm mb-4 p-2 lg:p-6 font-medium text-start w-full">
@@ -38,8 +40,8 @@ const Question = ({ questionData, onUpdate, onDelete }: QuestionProps) => {
             type="text"
             placeholder="Question"
             className="w-full font-medium p-3 outline-none bg-gray-50 border-b-2 border-b-gray-300  text-gray-900  rounded-sm  focus:border-b-[#4F46E5]"
-            value={question || ""}
-            onChange={(e) => setQuestion(e.target.value)}
+            value={title || ""}
+            onChange={(e) => setTitle(e.target.value)}
             required
           />
         </div>
