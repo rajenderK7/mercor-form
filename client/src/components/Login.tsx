@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import authActions from "../actions/auth.actions";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import toast from "react-hot-toast";
 import userAtom from "../state/auth";
 
@@ -11,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isNewUser, setIsNewUser] = useState(false);
   const [searchParams, _] = useSearchParams();
+  const user = useRecoilValue(userAtom);
   const setUser = useSetRecoilState(userAtom);
   const navigate = useNavigate();
 
@@ -44,6 +45,13 @@ const Login = () => {
     }
     toast.error(data.message);
   };
+
+  useEffect(() => {
+    if (user.email) {
+      navigate("/dashboard");
+      return;
+    }
+  }, []);
 
   return (
     <div className="bg-[#EEF3FE] mx-auto w-full px-4 lg:px-0 flex justify-center h-screen -mt-14 items-center">
