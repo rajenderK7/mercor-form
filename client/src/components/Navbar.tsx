@@ -22,7 +22,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     if (authActions.logout()) {
       setUser({} as IUser);
-      navigate("/login", {
+      navigate("/", {
         replace: true,
       });
     } else {

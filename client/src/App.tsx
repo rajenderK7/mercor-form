@@ -5,7 +5,7 @@ import Create from "./components/Create";
 import Form from "./components/Form";
 import Login from "./components/Login";
 import Responded from "./components/Responded";
-import Home from "./components/Home";
+import Landing from "./components/Landing";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <Navbar />
       <main className="mt-14 md:p-0 mx-auto">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create" element={<Create />} />
