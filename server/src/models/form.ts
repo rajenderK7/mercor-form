@@ -11,6 +11,7 @@ export interface IFormField {
 }
 
 export interface IForm {
+  acceptingResponse: boolean;
   creatorId: string;
   title: string;
   desc?: string;
@@ -43,6 +44,11 @@ const FieldSchema = new Schema({
 
 const FormSchema = new Schema(
   {
+    acceptingResponse: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
     creatorId: {
       type: String,
       required: true,
