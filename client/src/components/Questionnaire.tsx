@@ -289,6 +289,7 @@ const Questionnaire = () => {
           </div>
           <div className="flex flex-col bg-white border border-gray-300 border-t-8 border-t-[#4F46E5] text-start rounded-md shadow-sm mb-4 p-3 lg:p-6">
             <input
+              name="title"
               type="text"
               className="text-3xl font-medium mercor-color outline-none  border-b-gray-300 py-1 border-b-2 focus:border-b-[#4F46E5]"
               placeholder="Untitled form"
@@ -297,6 +298,7 @@ const Questionnaire = () => {
               required
             />
             <input
+              name="desc"
               type="text"
               className="mt-3 mb-2 text-sm font-medium text-gray-600 outline-none border-b-gray-300 py-1 border-b-2 focus:border-b-[#4F46E5]"
               placeholder="Form description"
