@@ -1,8 +1,22 @@
 import CenterWrapper from "./CenterWrapper";
 import formImg from "../assets/form-img.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import userAtom from "../state/auth";
+import { useEffect } from "react";
 
 const Landing = () => {
+  const user = useRecoilValue(userAtom);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user.email) {
+      navigate("/dashboard", {
+        replace: true,
+      });
+    }
+  }, []);
+
   return (
     <div className="flex flex-col justify-center h-screen -mt-14">
       <CenterWrapper>

@@ -31,7 +31,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full h-14 flex justify-between items-center border bg-white border-gray-200 px-4 fixed top-0">
+    <div className="w-full h-14 flex justify-between items-center border bg-white border-gray-200 px-4 fixed top-0 z-10">
       <Link to="/dashboard" className="font-semibold text-xl text-[#4F46E5]">
         Mercor Form
       </Link>
