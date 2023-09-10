@@ -120,7 +120,6 @@ const Login = () => {
               <button
                 type="submit"
                 className="bg-[#4F46E5] text-white py-2 px-4 rounded-md hover:bg-opacity-80"
-                // onSubmit={handleSignup}
               >
                 Sign Up
               </button>
@@ -128,7 +127,6 @@ const Login = () => {
               <button
                 type="submit"
                 className="bg-[#4F46E5] text-white py-2 px-4 rounded-md hover:bg-opacity-80"
-                // onSubmit={handleLogin}
               >
                 Login
               </button>

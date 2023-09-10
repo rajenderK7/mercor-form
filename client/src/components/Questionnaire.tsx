@@ -165,7 +165,7 @@ const Questionnaire = () => {
   }, []);
 
   useEffect(() => {
-    setShareLink(`http://localhost:5173/form/${formId}`);
+    setShareLink(`${import.meta.env.VITE_CLIENT_URL}/form/${formId}`);
   }, [formId]);
 
   return (

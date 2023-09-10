@@ -69,7 +69,12 @@ const Navbar = () => {
           </PopoverContent>
         </Popover>
       ) : (
-        <div className="font-medium text-[#4F46E5]">Login</div>
+        <Link
+          to="/login"
+          className="font-medium text-[#4F46E5] hover:underline"
+        >
+          Login
+        </Link>
       )}
     </div>
   );
