@@ -105,6 +105,22 @@ router.delete("/:formId/:creatorId", async (req, res) => {
   }
 });
 
+router.put("/update-acceptance/:formId", async (req, res) => {
+  try {
+    const { formId } = req.params;
+    const { acceptingResponse } = req.body;
+    await Form.updateOne(
+      { _id: formId },
+      {
+        acceptingResponse,
+      }
+    );
+    res.status(200).json({ message: "success" });
+  } catch (e: any) {
+    res.status(500).json({ message: e.message });
+  }
+});
+
 const sendMail = (
   emails: string[],
   title: string,
