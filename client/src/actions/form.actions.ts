@@ -117,6 +117,35 @@ const fetchResponses = async (formId: string) => {
   }
 };
 
+const fetchMyForms = async (userId: string) => {
+  try {
+    const res = await fetch(`${endpoints.API_URL}/form/user-forms/${userId}`);
+    const data = await res.json();
+    return data;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};
+
+const deleteMyForm = async (formId: string, creatorId: string) => {
+  try {
+    const res = await fetch(
+      `${endpoints.API_URL}/form/${formId}/${creatorId}`,
+      {
+        method: "DELETE",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};
+
 const sendMail = async (
   emails: string,
   title: string,
@@ -147,5 +176,7 @@ export default {
   fetchValidCreator,
   submitResponse,
   fetchResponses,
+  deleteMyForm,
+  fetchMyForms,
   sendMail,
 };
