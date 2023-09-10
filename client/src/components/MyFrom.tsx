@@ -43,7 +43,7 @@ const MyFrom = ({ e, fetchMyForms }: MyFormProps) => {
         <p className="font-medium">{e.title}</p>
         <div className="flex text-xs lg:text-sm">
           <p className="mr-2">
-            Last Opened: <span>{formatDate(e.updatedAt)}</span>
+            Opened: <span>{formatDate(e.updatedAt)}</span>
           </p>
         </div>
       </Link>

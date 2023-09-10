@@ -50,7 +50,7 @@ const Create = () => {
     <>
       {loading && <p className="text-center">Loading..</p>}
       {!loading && (
-        <div className="mx-auto bg-[#EEF3FE] h-full">
+        <div className="mx-auto bg-[#EEF3FE] min-h-screen">
           <Tabs align="center" variant="unstyled">
             <TabList
               className="font-medium"
