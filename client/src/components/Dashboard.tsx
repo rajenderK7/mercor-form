@@ -57,7 +57,10 @@ const Dashboard = () => {
         {/* My forms */}
         <div className="py-4">
           {loading && <p className="text-center">Loading..</p>}
-          {!loading &&
+          {!loading && myForms.length === 0 && (
+            <p className="text-center">No forms yet. Create now</p>
+          )}
+          {myForms.length > 0 &&
             myForms.map((e: any, idx: any) => {
               return <MyFrom key={idx} e={e} fetchMyForms={fetchMyForms} />;
             })}
