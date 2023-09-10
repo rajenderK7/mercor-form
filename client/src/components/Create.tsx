@@ -76,7 +76,7 @@ const Create = () => {
               </TabPanel>
               {/* Settings */}
               <TabPanel>
-                <p>three!</p>
+                <p>Settings!</p>
               </TabPanel>
             </TabPanels>
           </Tabs>
