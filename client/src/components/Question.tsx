@@ -126,7 +126,7 @@ const Question = ({ questionData, onUpdate, onDelete }: QuestionProps) => {
               onChange={(e) => setRequired(e.target.checked)}
               className="sr-only peer"
             />
-            <MySwitch />
+            <MySwitch text="Required" />
           </label>
         </div>
       </div>

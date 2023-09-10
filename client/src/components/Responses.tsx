@@ -12,6 +12,7 @@ import {
 import Summary from "./Summary";
 import formActions from "../actions/form.actions";
 import ResponseQuestions from "./ResponseQuestions";
+import { MySwitch } from "./Icons";
 
 export interface IFormResponse {
   userId: string;
@@ -25,7 +26,15 @@ interface Q {
   [q: string]: string[];
 }
 
-const Responses = () => {
+interface ResponsesProps {
+  acceptingResponses: boolean;
+  setAcceptingResponses: Function;
+}
+
+const Responses = ({
+  acceptingResponses,
+  setAcceptingResponses,
+}: ResponsesProps) => {
   const [types, setTypes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [nResponses, setNResponses] = useState(0);
@@ -39,6 +48,11 @@ const Responses = () => {
     const types = data.types.map((t: any) => t.type);
     setQuestions(data.types);
     setTypes(types);
+  };
+
+  const acceptingResponsesHandler = async (e: any) => {
+    setAcceptingResponses(e.target.checked);
+    await formActions.updateAcceptance(formId!, e.target.checked);
   };
 
   const fetchResponses = async (formId: string) => {
@@ -71,7 +85,9 @@ const Responses = () => {
   }, [searchParams]);
   return (
     <>
-      {!formId && <p className="text-center">Loading..</p>}
+      {!formId && (
+        <p className="text-center">Create a form to view responses</p>
+      )}
       {loading && <p>Loading...</p>}
       {formId && !loading && (
         <div className="w-full font-sans">
@@ -85,6 +101,28 @@ const Responses = () => {
               >
                 Refresh
               </Button>
+            </div>
+            <div className="flex justify-end bg-white items-center shadow-md">
+              <p className="text-end text-sm pr-2">Accepting responses</p>
+              <label className="relative inline-flex items-center cursor-pointer my-2">
+                <input
+                  name="acceptingResponses"
+                  type="checkbox"
+                  value="acceptingResponses"
+                  // checked={x}
+                  checked={acceptingResponses}
+                  // onChange={(e) => {
+                  //   // setX(e.target.checked);
+                  //   setAcceptingResponses(e.target.checked);
+                  //   console.log(e.target.checked);
+
+                  //   // console.log(acceptingResponses);
+                  // }}
+                  onChange={acceptingResponsesHandler}
+                  className="sr-only peer"
+                />
+                <MySwitch text="" />
+              </label>
             </div>
             <Tabs align="center" variant="unstyled" border="2">
               <TabList
