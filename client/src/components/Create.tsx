@@ -18,6 +18,7 @@ import taost from "react-hot-toast";
 const Create = () => {
   const user = useRecoilValue(userAtom);
   const [searchParams, _] = useSearchParams();
+  const [acceptingResponses, setAcceptingResponses] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -68,11 +69,17 @@ const Create = () => {
             <TabPanels className="max-w-3xl">
               {/* Questions */}
               <TabPanel>
-                <Questionnaire />
+                <Questionnaire
+                  acceptingResponses={acceptingResponses}
+                  setAcceptingResponses={setAcceptingResponses}
+                />
               </TabPanel>
               {/* Responses */}
               <TabPanel>
-                <Responses />
+                <Responses
+                  acceptingResponses={acceptingResponses}
+                  setAcceptingResponses={setAcceptingResponses}
+                />
               </TabPanel>
               {/* Settings */}
               <TabPanel>

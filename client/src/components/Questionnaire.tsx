@@ -40,7 +40,15 @@ interface T {
   options?: string[];
 }
 
-const Questionnaire = () => {
+interface QuestionnaireProps {
+  acceptingResponses: boolean;
+  setAcceptingResponses: Function;
+}
+
+const Questionnaire = ({
+  acceptingResponses,
+  setAcceptingResponses,
+}: QuestionnaireProps) => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [questions, setQuestions] = useState<T[]>([questionPlaceholder]);
@@ -108,6 +116,7 @@ const Questionnaire = () => {
     });
 
     const formData = {
+      acceptingResponses,
       creatorId: user.userId,
       title,
       desc,
@@ -137,6 +146,7 @@ const Questionnaire = () => {
 
   const fetchForm = async (formId: string) => {
     const data = await formActions.fetchForm(formId);
+    setAcceptingResponses(data.form.acceptingResponse);
     setQuestions(data.form.fields);
     setTitle(data.form.title);
     setDesc(data.form.desc);

@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import FormField, { Error } from "./FormField";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import formActions from "../actions/form.actions";
 import { useRecoilValue } from "recoil";
@@ -24,6 +24,21 @@ export interface IForm {
   fields: IFormField[];
 }
 
+const NotAccepting = () => {
+  return (
+    <div className="bg-primary mt-56  lg:mt-[10%] mx-3 font-sans flex justify-center items-center font-medium">
+      <div className="bg-white p-8 border border-gray-300 shadow-md rounded-lg w-xl text-center">
+        <p className="mb-4 text-red-500">
+          This form is no longer accepting responses.
+        </p>
+        <Link to="/" className="text-blue-600 underline">
+          Go to Mercor forms
+        </Link>
+      </div>
+    </div>
+  );
+};
+
 const Form = () => {
   const {
     handleSubmit,
@@ -35,12 +50,17 @@ const Form = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [acceptingResponses, setAcceptingResponses] = useState(true);
   const [form, setForm] = useState<IForm | undefined>();
 
   const fetchForm = async () => {
     setLoading(true);
     const data = await formActions.fetchForm(formId!);
-    setForm(data.form);
+    if (!data.form.acceptingResponse) {
+      setAcceptingResponses(false);
+    } else {
+      setForm(data.form);
+    }
     setLoading(false);
   };
 
@@ -70,6 +90,10 @@ const Form = () => {
       fetchForm();
     }
   }, []);
+
+  if (!acceptingResponses) {
+    return <NotAccepting />;
+  }
 
   return (
     <div className="max-w-2xl mx-auto py-4 px-2 md:px-0 font-sans">

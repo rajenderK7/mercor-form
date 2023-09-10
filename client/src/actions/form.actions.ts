@@ -146,6 +146,26 @@ const deleteMyForm = async (formId: string, creatorId: string) => {
   }
 };
 
+const updateAcceptance = async (formId: string, acceptingResponse: boolean) => {
+  try {
+    const res = await fetch(
+      `${endpoints.API_URL}/form/update-acceptance/${formId}`,
+      {
+        method: "PUT",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ acceptingResponse }),
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e: any) {
+    throw new Error(e);
+  }
+};
+
 const sendMail = async (
   emails: string,
   title: string,
@@ -178,5 +198,6 @@ export default {
   fetchResponses,
   deleteMyForm,
   fetchMyForms,
+  updateAcceptance,
   sendMail,
 };
