@@ -11,7 +11,7 @@ const Landing = () => {
             <div className="text-5xl lg:text-6xl font-semibold max-w-md leading-[56px] lg:leading-[72px] mb-8">
               Get insights quickly, with Mercor Forms
             </div>
-            <p className="mb-6">
+            <p className="mb-6 lg:text-lg text-gray-500">
               Easily create and share online forms and surveys, and analyze
               responses in real-time.
             </p>
