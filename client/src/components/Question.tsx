@@ -37,6 +37,7 @@ const Question = ({ questionData, onUpdate, onDelete }: QuestionProps) => {
       <div className="flex flex-col lg:flex-row lg:items-center">
         <div className="w-full lg:w-[70%]">
           <input
+            name="question"
             type="text"
             placeholder="Question"
             className="w-full font-medium p-3 outline-none bg-gray-50 border-b-2 border-b-gray-300  text-gray-900  rounded-sm  focus:border-b-[#4F46E5]"
@@ -97,6 +98,7 @@ const Question = ({ questionData, onUpdate, onDelete }: QuestionProps) => {
         {(type === "select" || type === "radio") && (
           <form onSubmit={addOptionHandler}>
             <input
+              name="option"
               type="text"
               className="mt-2 outline-none p-1 text-sm text-gray-900 border-b-2 border-gray-300 bg-gray-50"
               value={option}
@@ -117,8 +119,10 @@ const Question = ({ questionData, onUpdate, onDelete }: QuestionProps) => {
         <div>
           <label className="relative inline-flex items-center cursor-pointer">
             <input
+              name="required"
               type="checkbox"
               value="required"
+              checked={required}
               onChange={(e) => setRequired(e.target.checked)}
               className="sr-only peer"
             />
