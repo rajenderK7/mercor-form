@@ -15,7 +15,8 @@ const Login = () => {
   const setUser = useSetRecoilState(userAtom);
   const navigate = useNavigate();
 
-  const handleSignup = async () => {
+  const handleSignup = async (e: any) => {
+    e.preventDefault();
     const data = await authActions.signUp({ name, email, password });
     if (data.message === "success") {
       toast.success("Login to continue");
@@ -25,7 +26,8 @@ const Login = () => {
     toast.error(data.message);
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
     const data = await authActions.login({ email, password });
     if (data.message === "success") {
       localStorage.setItem("user", JSON.stringify(data.user));
@@ -59,7 +61,7 @@ const Login = () => {
         <h2 className="text-2xl font-semibold  mb-4 text-[#4F46E5]">
           {isNewUser ? "Sign Up" : "Login"}
         </h2>
-        <form>
+        <form onSubmit={isNewUser ? handleSignup : handleLogin}>
           {isNewUser && (
             <div className="mb-4">
               <label
@@ -75,7 +77,7 @@ const Login = () => {
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required
+                required={isNewUser}
               />
             </div>
           )}
@@ -116,17 +118,17 @@ const Login = () => {
           <div className="mb-4 text-sm font-medium">
             {isNewUser ? (
               <button
-                type="button"
+                type="submit"
                 className="bg-[#4F46E5] text-white py-2 px-4 rounded-md hover:bg-opacity-80"
-                onClick={handleSignup}
+                // onSubmit={handleSignup}
               >
                 Sign Up
               </button>
             ) : (
               <button
-                type="button"
+                type="submit"
                 className="bg-[#4F46E5] text-white py-2 px-4 rounded-md hover:bg-opacity-80"
-                onClick={handleLogin}
+                // onSubmit={handleLogin}
               >
                 Login
               </button>
