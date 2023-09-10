@@ -7,7 +7,6 @@ import {
   Tab,
   TabPanel,
   TabIndicator,
-  Button,
 } from "@chakra-ui/react";
 import Summary from "./Summary";
 import formActions from "../actions/form.actions";
@@ -77,7 +76,7 @@ const Responses = () => {
               <p className="text-2xl ">{nResponses} Responses</p>
               <p
                 onClick={() => fetchResponses(formId)}
-                className="text-[#4F46E5]"
+                className="text-[#4F46E5] hover:cursor-pointer"
               >
                 Refresh
               </p>
