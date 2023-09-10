@@ -7,9 +7,11 @@ import {
   Tab,
   TabPanel,
   TabIndicator,
+  Button,
 } from "@chakra-ui/react";
 import Summary from "./Summary";
 import formActions from "../actions/form.actions";
+import ResponseQuestions from "./ResponseQuestions";
 
 export interface IFormResponse {
   userId: string;
@@ -27,6 +29,7 @@ const Responses = () => {
   const [types, setTypes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [nResponses, setNResponses] = useState(0);
+  const [questions, setQuestions] = useState([]);
   const [summary, setSummary] = useState<Q>({});
   const [searchParams, _] = useSearchParams();
   const [formId, setFormId] = useState<string | null>(null);
@@ -34,6 +37,7 @@ const Responses = () => {
   const fetchFormQuestions = async (formId: string) => {
     const data = await formActions.fetchFormQuestions(formId!);
     const types = data.types.map((t: any) => t.type);
+    setQuestions(data.types);
     setTypes(types);
   };
 
@@ -74,12 +78,13 @@ const Responses = () => {
           <div className=" font-medium">
             <div className="flex items-center justify-between text-start px-3 py-3 w-full bg-white shadow-md rounded-t-md">
               <p className="text-2xl ">{nResponses} Responses</p>
-              <p
+              <Button
+                color="#4F46E5"
                 onClick={() => fetchResponses(formId)}
-                className="text-[#4F46E5] hover:cursor-pointer"
+                className="hover:cursor-pointer font-semibold"
               >
                 Refresh
-              </p>
+              </Button>
             </div>
             <Tabs align="center" variant="unstyled" border="2">
               <TabList
@@ -94,7 +99,7 @@ const Responses = () => {
                 shadow="md"
               >
                 <Tab>Summary</Tab>
-                <Tab>Settings</Tab>
+                <Tab>Question</Tab>
               </TabList>
 
               <TabIndicator
@@ -105,13 +110,13 @@ const Responses = () => {
               />
 
               <TabPanels className="w-full">
-                {/* Questions */}
+                {/* Summary */}
                 <TabPanel>
                   <Summary types={types} summary={summary} />
                 </TabPanel>
-                {/* Settings */}
+                {/* Question */}
                 <TabPanel>
-                  <p>Settings</p>
+                  <ResponseQuestions questions={questions} />
                 </TabPanel>
               </TabPanels>
             </Tabs>
