@@ -86,7 +86,9 @@ router.post("/share/email", async (req, res) => {
 router.get("/user-forms/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const forms = await Form.find({ creatorId: userId });
+    const forms = await Form.find({ creatorId: userId }).sort({
+      updatedAt: "desc",
+    });
     res.status(200).json({ message: "success", forms });
   } catch (e: any) {
     res.status(500).json({ message: e.message });
