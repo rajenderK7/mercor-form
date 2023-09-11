@@ -62,7 +62,7 @@ const MyFrom = ({ e, fetchMyForms }: MyFormProps) => {
           onClose={onClose}
         >
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent margin="2">
             <ModalHeader>Do you want to delete?</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

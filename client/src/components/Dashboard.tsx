@@ -11,8 +11,8 @@ import Spinner from "./Spinner";
 const BlankButton = () => {
   return (
     <Link to="/create" className="flex flex-col text-sm font-medium">
-      <div className="w-40 h-36 rounded-sm bg-white p-4 border border-gray-300 hover:border-blue-800 mb-2 flex items-center justify-center ">
-        <img src={plus} alt="Create" width={60} height={60} />
+      <div className="w-40 h-36 rounded-sm bg-white p-2 border border-gray-300 hover:border-blue-800 mb-2 flex items-center justify-center ">
+        <img src={plus} alt="Create" width={120} height={120} />
       </div>
       Blank
     </Link>
