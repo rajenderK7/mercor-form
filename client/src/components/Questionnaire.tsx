@@ -188,7 +188,7 @@ const Questionnaire = ({
       )}
       {!loading && (
         <div className="w-full font-sans">
-          <div className="w-fit lg:w-auto mb-4 lg:mb-0 lg:fixed flex lg:flex-col space-x-5 lg:space-x-0 lg:space-y-3 lg:items-center right-[13%] top-[50%] bg-white p-3 rounded-md border border-gray-300">
+          <div className="w-fit lg:w-auto mb-4 lg:mb-0 lg:fixed flex lg:flex-col space-x-5 lg:space-x-0 lg:space-y-3 lg:items-center lg:right-[13%] lg:top-[50%] bg-white p-3 rounded-md border border-gray-300 sticky top-16">
             <Button
               leftIcon={<AddIcon />}
               size="sm"
