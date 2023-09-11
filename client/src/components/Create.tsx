@@ -14,6 +14,7 @@ import userAtom from "../state/auth";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import formActions from "../actions/form.actions";
 import taost from "react-hot-toast";
+import Spinner from "./Spinner";
 
 const Create = () => {
   const user = useRecoilValue(userAtom);
@@ -49,7 +50,11 @@ const Create = () => {
 
   return (
     <>
-      {loading && <p className="text-center">Loading..</p>}
+      {loading && (
+        <div className="flex justify-center">
+          <Spinner />
+        </div>
+      )}
       {!loading && (
         <div className="mx-auto bg-[#EEF3FE] min-h-screen">
           <Tabs align="center" variant="unstyled">
@@ -59,9 +64,9 @@ const Create = () => {
               color="black"
               bg="white"
             >
-              <Tab>Questions</Tab>
-              <Tab>Responses</Tab>
-              <Tab>Settings</Tab>
+              <Tab fontSize="sm">Questions</Tab>
+              <Tab fontSize="sm">Responses</Tab>
+              <Tab fontSize="sm">Settings</Tab>
             </TabList>
 
             <TabIndicator mt="-1.5px" height="4px" bg="#4F46E5" rounded="md" />

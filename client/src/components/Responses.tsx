@@ -13,6 +13,7 @@ import Summary from "./Summary";
 import formActions from "../actions/form.actions";
 import ResponseQuestions from "./ResponseQuestions";
 import { MySwitch } from "./Icons";
+import Spinner from "./Spinner";
 
 export interface IFormResponse {
   userId: string;
@@ -88,7 +89,11 @@ const Responses = ({
       {!formId && (
         <p className="text-center">Create a form to view responses</p>
       )}
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <div className="flex justify-center">
+          <Spinner />
+        </div>
+      )}
       {formId && !loading && (
         <div className="w-full font-sans">
           <div className=" font-medium">
@@ -97,27 +102,21 @@ const Responses = ({
               <Button
                 color="#4F46E5"
                 onClick={() => fetchResponses(formId)}
-                className="hover:cursor-pointer font-semibold"
+                fontSize="sm"
+                size="sm"
+                className="hover:cursor-pointer"
               >
                 Refresh
               </Button>
             </div>
             <div className="flex justify-end bg-white items-center shadow-md">
-              <p className="text-end text-sm pr-2">Accepting responses</p>
-              <label className="relative inline-flex items-center cursor-pointer my-2">
+              <p className="text-end text-sm mr-2">Accepting responses</p>
+              <label className="relative inline-flex items-center cursor-pointer my-2 text-sm">
                 <input
                   name="acceptingResponses"
                   type="checkbox"
                   value="acceptingResponses"
-                  // checked={x}
                   checked={acceptingResponses}
-                  // onChange={(e) => {
-                  //   // setX(e.target.checked);
-                  //   setAcceptingResponses(e.target.checked);
-                  //   console.log(e.target.checked);
-
-                  //   // console.log(acceptingResponses);
-                  // }}
                   onChange={acceptingResponsesHandler}
                   className="sr-only peer"
                 />
@@ -136,8 +135,8 @@ const Responses = ({
                 roundedBottom="md"
                 shadow="md"
               >
-                <Tab>Summary</Tab>
-                <Tab>Question</Tab>
+                <Tab fontSize="sm">Summary</Tab>
+                <Tab fontSize="sm">Question</Tab>
               </TabList>
 
               <TabIndicator

@@ -6,6 +6,7 @@ import userAtom from "../state/auth";
 import { useRecoilValue } from "recoil";
 import formActions from "../actions/form.actions";
 import MyFrom from "./MyFrom";
+import Spinner from "./Spinner";
 
 const BlankButton = () => {
   return (
@@ -56,7 +57,11 @@ const Dashboard = () => {
         <p className="font-medium">Recent forms</p>
         {/* My forms */}
         <div className="py-4">
-          {loading && <p className="text-center">Loading..</p>}
+          {loading && (
+            <div className="flex justify-center">
+              <Spinner />
+            </div>
+          )}
           {!loading && myForms.length === 0 && (
             <p className="text-center">No forms yet. Create now</p>
           )}

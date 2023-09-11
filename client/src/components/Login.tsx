@@ -4,12 +4,14 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import toast from "react-hot-toast";
 import userAtom from "../state/auth";
+import LoginSpinner from "./LoginSpinner";
 
 const Login = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isNewUser, setIsNewUser] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [searchParams, _] = useSearchParams();
   const user = useRecoilValue(userAtom);
   const setUser = useSetRecoilState(userAtom);
@@ -17,17 +19,21 @@ const Login = () => {
 
   const handleSignup = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
     const data = await authActions.signUp({ name, email, password });
     if (data.message === "success") {
       toast.success("Login to continue");
       setIsNewUser(false);
+      setLoading(false);
       return;
     }
     toast.error(data.message);
+    setLoading(false);
   };
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
     const data = await authActions.login({ email, password });
     if (data.message === "success") {
       localStorage.setItem("user", JSON.stringify(data.user));
@@ -43,9 +49,11 @@ const Login = () => {
       navigate("/dashboard", {
         replace: true,
       });
+      setLoading(false);
       return;
     }
     toast.error(data.message);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -115,23 +123,29 @@ const Login = () => {
               required
             />
           </div>
-          <div className="mb-4 text-sm font-medium">
-            {isNewUser ? (
-              <button
-                type="submit"
-                className="bg-[#4F46E5] text-white py-2 px-4 rounded-md hover:bg-opacity-80"
-              >
-                Sign Up
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="bg-[#4F46E5] text-white py-2 px-4 rounded-md hover:bg-opacity-80"
-              >
-                Login
-              </button>
-            )}
-          </div>
+          {loading ? (
+            <LoginSpinner />
+          ) : (
+            <div className="mb-4 text-sm font-medium">
+              {isNewUser ? (
+                <button
+                  type="submit"
+                  className="bg-[#4F46E5] w-full text-white py-2 px-4 rounded-md hover:bg-opacity-80"
+                  disabled={loading}
+                >
+                  Sign Up
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="bg-[#4F46E5] w-full text-white py-2 px-4 rounded-md hover:bg-opacity-80"
+                  disabled={loading}
+                >
+                  Login
+                </button>
+              )}
+            </div>
+          )}
         </form>
         <p className="text-gray-500 text-sm">
           {isNewUser ? "Already have an account?" : "Don't have an account?"}

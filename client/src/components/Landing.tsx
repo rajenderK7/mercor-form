@@ -21,11 +21,11 @@ const Landing = () => {
     <div className="flex flex-col justify-center h-screen -mt-14">
       <CenterWrapper>
         <div className="flex flex-col lg:flex-row lg:items-center">
-          <div className="flex flex-col items-center lg:items-start">
-            <div className="text-5xl lg:text-6xl font-semibold max-w-md leading-[56px] lg:leading-[72px] mb-8">
+          <div className="flex flex-col justify-start items-start">
+            <div className="text-5xl lg:text-6xl font-semibold max-w-md leading-[56px] lg:leading-[72px] mb-4 lg:mb-8 text-start">
               Get insights quickly, with Mercor Forms
             </div>
-            <p className="mb-6 lg:text-lg text-gray-500">
+            <p className="mb-3 lg:mb-6 lg:text-lg text-gray-500">
               Easily create and share online forms and surveys, and analyze
               responses in real-time.
             </p>
@@ -46,7 +46,7 @@ const Landing = () => {
           <img
             src={formImg}
             alt="Form Image"
-            className="lg:w-[50%] mt-10 lg:mt-0"
+            className="lg:w-[50%] mt-5 lg:mt-0"
           />
         </div>
       </CenterWrapper>
