@@ -86,6 +86,7 @@ const Login = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required={isNewUser}
+                autoComplete="off"
               />
             </div>
           )}
@@ -104,6 +105,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="off"
             />
           </div>
           <div className="mb-4">
